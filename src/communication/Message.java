@@ -82,9 +82,12 @@ public class Message
 	//! METHODS
 	
 	// constructors
-	private Message(int sender_id, Type type)
+	public Message(int sender_id, Type type) //! FIXME should be private
 	{
 		this.type = type;
 		this.sender_id = sender_id;
 	}
+	
+	// accessors
+	public int getSenderId() { return sender_id; }
 }

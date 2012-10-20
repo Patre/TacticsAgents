@@ -65,7 +65,8 @@ public class Socket
 	
 	public void treatMessage(Message message)
 	{
-		System.out.println("RECEIVED A MESSAGE!");
+		System.out.println(manager.getOwner().getId() + " received message from "
+				+ message.getSenderId() + " via connexion " + connexion_id);
 	}
 	
 	// accessors

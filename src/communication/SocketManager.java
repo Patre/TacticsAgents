@@ -20,6 +20,9 @@ public class SocketManager
 		this.owner = owner;
 	}
 	
+	// accessor
+	public Living getOwner() { return owner; }
+	
 	// communication
 	public void newConnexion(Message message, int destination_id)
 	{
