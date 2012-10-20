@@ -17,70 +17,36 @@
 
 package communication;
 
-import math.V2;
-
 /**
- * A Message sent from one agent to another, with a type value so that it can be
- * caste to the appropriate sub-class.
+ * Class deals with a sending a message and receiving the reply, if there is one
+ * to receive: it negotiates on behalf of its owner.
  * 
  * @author wdyce
  * @since 20 October, 2012
  * @version 0.1
  */
+
 public class SpeechAct
 {
-	// ! NESTING
-
-	/**
-	 * Type of speech act, so that we can caste it to the appropriate sub-class.
-	 */
-	public static enum Type
-	{
-		/**
-		 * "Speech acts that commit a speaker to the truth of the expressed
-		 * proposition, e.g. reciting a creed."
-		 */
-		ASSERTIVE,
-		/**
-		 * "Speech acts that are to cause the hearer to take a particular action,
-		 * e.g. requests, commands and advice."
-		 */
-		DIRECTIVE,
-		/**
-		 * "Speech acts that commit a speaker to some future action, e.g. promises
-		 * and oaths."
-		 */
-		COMMISSIVE,
-		/**
-		 * "Speech acts that express the speaker's attitudes and emotions towards 
-		 * the proposition, e.g. congratulations, excuses and thanks."
-		 */
-		EXPRESSIVE,
-		/**
-		 * "Speech acts that change the reality in accord with the proposition of 
-		 * the declaration, e.g. baptisms, pronouncing someone guilty or pronouncing
-		 * someone husband and wife."
-		 */
-		DECLARATIVE
-	}
-
-	// ! ATTRIBUTES
 	
-	/**
-	 * Type of speech act, so that we can caste it to the appropriate sub-class.
-	 */
-	private Type type;
-	
-	/**
-	 * The sender's position relative to the receiver.
-	 */
-	private V2 sender_position;
-	
-	/**
-	 * The sender's unique identifier.
-	 */
-	private int sender_id;
+	//! ATTRIBUTES
+	private final int sender_id;
 	
 	
 	//! METHODS
+	
+	// 
+	public SpeechAct(int sender_id)
+	{
+		this.sender_id = sender_id;
+		
+		send(new Locution(sender_id, Locution.Type.EXPRESSIVE));
+	}
+	
+	//! SUBROUTINES
+	
+	public void send(Locution msg)
+	{
+		// message will be received based on annotations
+	}
 }
