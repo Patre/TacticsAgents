@@ -26,7 +26,7 @@ import repast.simphony.util.SimUtilities;
 public class Animal extends Living
 {
 	protected int hunger, thirst, movementSpeed, percept;
-	protected boolean sexe;
+	protected boolean sexe, pregnant;
 	protected Map<String, Boolean> states;
 
 	public Animal(ContinuousSpace<Object> space, Grid<Object> grid,
@@ -44,6 +44,7 @@ public class Animal extends Living
 		states.put("seeking_mate", true);
 		movementSpeed = 8;
 		percept = 20;
+		pregnant = false;
 	}
 
 	public void moveTowards(GridPoint pt)
@@ -66,6 +67,7 @@ public class Animal extends Living
 	public void eat(Living o)
 	{
 		hunger -= o.energeticValue;
+		System.out.println("Je suis l'animal num "+id+" et je mange une plante.");
 		o.die();
 	}
 
@@ -249,7 +251,7 @@ public class Animal extends Living
 			}
 		} else if (states.get("hunger_satisfying") == true)
 		{
-			System.out.println("et je manger.");
+			System.out.println("et je veux manger.");
 			GridCellNgh<Plant> plantNghCreator = new GridCellNgh<Plant>(grid,
 					pt, Plant.class, percept, percept);
 			List<GridCell<Plant>> plantGridCells = plantNghCreator
@@ -301,18 +303,29 @@ public class Animal extends Living
 			SimUtilities.shuffle(animalGridCells, RandomHelper.getUniform());
 			GridPoint nearestPoint = null, farestPoint = null;
 			float minDistance = Float.MAX_VALUE, maxDistance = -1;
-			GridCell<Animal> mateCell = null;
+			Animal mate = null, animal = null;
+			boolean potentialMate;
 			for (GridCell<Animal> cell : animalGridCells)
 			{
 				V2 v = new V2(new V2(pt.getX(), pt.getY()), new V2(cell
 						.getPoint().getX(), cell.getPoint().getY()));
+				potentialMate = false;
 				if (cell.size() > 0)
 				{
-					if (v.norm() < minDistance)
+					for(Animal a : cell.items())
+					{
+						if(a.sexe != this.sexe)
+						{
+							potentialMate = true;
+							animal = a;
+							break;
+						}
+					}
+					if (potentialMate && v.norm() < minDistance)
 					{
 						minDistance = v.norm();
 						nearestPoint = cell.getPoint();
-						mateCell = cell;
+						mate = animal;
 					}
 				}
 				if (v.norm() > maxDistance)
@@ -328,11 +341,7 @@ public class Animal extends Living
 				moveTowards(nearestPoint);
 				if (pt.equals(nearestPoint))
 				{
-					for(Animal mate : mateCell.items())
-					{
-						eat(mate);
-						break;
-					}
+					breed(animal);
 				}
 			}
 		}

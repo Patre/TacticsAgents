@@ -31,7 +31,7 @@ public class Living {
 	}
 	
 	public void die() {
-		//System.out.println("Je suis "+id+" et je meurs. ");
+		System.out.println("Je suis "+id+" et je meurs. ");
 		Object obj = this;
 		Context<Object> context = ContextUtils.getContext(obj);
 		context.remove(obj);
