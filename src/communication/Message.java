@@ -27,7 +27,7 @@ import math.V2;
  * @since 20 October, 2012
  * @version 0.1
  */
-public class Locution
+public class Message
 {
 	// ! NESTING
 
@@ -81,13 +81,8 @@ public class Locution
 	
 	//! METHODS
 	
-	/**
-	 * 
-	 * @param type
-	 * @param sender_position
-	 * @param sender_id
-	 */
-	public Locution(int sender_id, Type type) //! FIXME -- should be protected
+	// constructors
+	private Message(int sender_id, Type type)
 	{
 		this.type = type;
 		this.sender_id = sender_id;

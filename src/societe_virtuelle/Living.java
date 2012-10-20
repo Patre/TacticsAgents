@@ -35,4 +35,8 @@ public class Living {
 		Context<Object> context = ContextUtils.getContext(obj);
 		context.remove(obj);
 	}
+	
+	public int getId() {
+		return id;
+	}
 }

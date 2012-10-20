@@ -1,49 +1,39 @@
 package societe_virtuelle;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import repast.simphony.engine.schedule.ScheduledMethod;
-import repast.simphony.query.space.grid.GridCell;
-import repast.simphony.query.space.grid.GridCellNgh;
-import repast.simphony.random.RandomHelper;
+import repast.simphony.engine.watcher.Watch;
+import repast.simphony.engine.watcher.WatcherTriggerSchedule;
 import repast.simphony.space.continuous.ContinuousSpace;
 import repast.simphony.space.grid.Grid;
-import repast.simphony.space.grid.GridPoint;
-import repast.simphony.util.SimUtilities;
 
+import communication.Socket;
 
-public class Human extends Animal {
+public class Human extends Animal
+{
+	public boolean has_spoken;
 	
-	public Human(ContinuousSpace<Object> space, Grid<Object> grid, int lifetime, int age) {
+	
+
+	public Human(ContinuousSpace<Object> space, Grid<Object> grid, int lifetime,
+			int age)
+	{
 		super(space, grid, lifetime, age);
 	}
-	
-	@ScheduledMethod(start = 1, interval = 1)
-	public void act() {
-		GridPoint pt = grid.getLocation(this);
-		boolean moved = false;
-		//System.out.print("Je suis "+id+" et je suis en case "+pt+". ");
-		if(thirst > 0) {
-			//System.out.print("J'ai soif : "+thirst+". ");
-			GridCellNgh<Water> nghCreator = new GridCellNgh<Water>(grid, pt, Water.class, 1, 1);
-			List<GridCell<Water>> gridCells = nghCreator.getNeighborhood(true);
-			SimUtilities.shuffle(gridCells, RandomHelper.getUniform());
-			for(GridCell<Water> cell : gridCells) {
-				if(cell.size() > 0) {
-					moveTowards(cell.getPoint());
-					moved = true;
-					drink();
-					//System.out.println("Je bouge en case "+cell.getPoint()+" et je bois. ");
-					break;
-				}
-			}
-			if(!moved) {
-				moveTowards(gridCells.get(0).getPoint());
-				//System.out.println("Je bouge en case "+gridCells.get(0).getPoint());
-			}
-		}
-		//else
-		//	System.out.println("Je n'ai pas soif. ");
+
+	@ScheduledMethod(start = 10, interval = 100)
+	public void speak()
+	{
+		has_spoken = true;
 	}
+
+		
+	@Watch(watcheeClassName = "societe_virtuelle.Human",
+			watcheeFieldNames = "has_spoken",
+			whenToTrigger = WatcherTriggerSchedule.IMMEDIATE)
+	public void hear(Human h)
+	{
+		System.out.println("I (" + id + ") CAN HEAR " + h.id);
+		h.has_spoken = false;
+	}
+
 }
