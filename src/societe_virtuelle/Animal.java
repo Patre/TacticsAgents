@@ -8,6 +8,7 @@ import java.util.Map;
 import math.V2;
 
 import repast.simphony.context.Context;
+import repast.simphony.engine.schedule.Schedule;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.engine.watcher.Watch;
@@ -26,7 +27,7 @@ import repast.simphony.util.SimUtilities;
 public class Animal extends Living
 {
 	protected int hunger, thirst, movementSpeed, percept;
-	protected boolean sexe, pregnant;
+	protected boolean isMale, pregnant;
 	protected Map<String, Boolean> states;
 
 	public Animal(ContinuousSpace<Object> space, Grid<Object> grid,
@@ -35,7 +36,7 @@ public class Animal extends Living
 		super(space, grid, lifetime, age);
 		this.hunger = 0;
 		this.thirst = 0;
-		this.sexe = (RandomHelper.nextIntFromTo(0, 1) > 0.5);
+		this.isMale = (RandomHelper.nextIntFromTo(0, 1) > 0.5);
 		energeticValue = 2;
 		states = new HashMap<String, Boolean>();
 		states.put("fleeing", false);
@@ -76,7 +77,7 @@ public class Animal extends Living
 		thirst = 0;
 	}
 
-	@ScheduledMethod(start = 60 * 60 * 24 / 6, interval = 60 * 60 * 24 / 6, priority = ScheduleParameters.LAST_PRIORITY)
+	@ScheduledMethod(start = 60*60*24/6.0, interval = 60*60*24/6.0, priority = ScheduleParameters.LAST_PRIORITY)
 	public void digest()
 	{
 		hunger++;
@@ -90,13 +91,26 @@ public class Animal extends Living
 
 	public void breed(Animal mate)
 	{
+		if(!isMale && !pregnant)
+		{
+			Context<Object> context = ContextUtils.getContext(this);
+			/*pregnant = true;
+			Schedule s = new Schedule();
+			ScheduleParameters params = ScheduleParameters.createOneTime(30*24*60*60/6.0);
+			s.schedule(params, this, "birth");*/
+		}
+	}
+	
+	public void birth()
+	{
 		Context<Object> context = ContextUtils.getContext(this);
+		pregnant = false;
 		int nbChildren = RandomHelper.nextIntFromTo(1, 2);
 		Animal child;
 		for (int i = 0; i < nbChildren; i++)
 		{
-			child = new Animal(space, grid, RandomHelper.nextIntFromTo(1, 10),
-					0);
+			child = new Animal(space, grid, RandomHelper.nextIntFromTo(1,
+					10), 0);
 			context.add(child);
 		}
 	}
@@ -314,7 +328,7 @@ public class Animal extends Living
 				{
 					for(Animal a : cell.items())
 					{
-						if(a.sexe != this.sexe)
+						if(a.isMale != this.isMale && !a.pregnant)
 						{
 							potentialMate = true;
 							animal = a;
@@ -341,7 +355,8 @@ public class Animal extends Living
 				moveTowards(nearestPoint);
 				if (pt.equals(nearestPoint))
 				{
-					breed(animal);
+					breed(mate);
+					mate.breed(this);
 				}
 			}
 		}
