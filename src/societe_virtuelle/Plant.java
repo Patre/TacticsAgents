@@ -8,8 +8,8 @@ import repast.simphony.space.grid.Grid;
 import repast.simphony.util.ContextUtils;
 
 public class Plant extends Living {
-	public Plant(ContinuousSpace<Object> space, Grid<Object> grid, int lifetime, int age) {
-		super(space, grid, lifetime, age);
+	public Plant(ContinuousSpace<Object> space, Grid<Object> grid) {
+		super(space, grid, 1, 0);
 		energeticValue = 1;
 	}
 	
@@ -19,7 +19,7 @@ public class Plant extends Living {
 		int nbChildren = RandomHelper.nextIntFromTo(1, 20);
 		Plant child;
 		for(int i = 0 ; i < nbChildren ; i++) {
-			child = new Plant(space, grid, 1, 0);
+			child = new Plant(space, grid);
 			context.add(child);
 		}
 	}
