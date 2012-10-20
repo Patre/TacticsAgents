@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import math.V2;
+
 import repast.simphony.context.Context;
 import repast.simphony.engine.schedule.ScheduleParameters;
 import repast.simphony.engine.schedule.ScheduledMethod;
@@ -97,6 +99,7 @@ public class Animal extends Living
 		int action = 1;
 		while (action <= nbPossibleActions)
 		{
+			/* get neighbourhood */
 			GridPoint pt = grid.getLocation(this);
 			GridCellNgh<Human> humanNghCreator = new GridCellNgh<Human>(grid,
 					pt, Human.class, 10, 10);
@@ -115,13 +118,39 @@ public class Animal extends Living
 			List<GridCell<Human>> plantGridCells = humanNghCreator
 					.getNeighborhood(true);
 			
-			ArrayList<GridPoint> nearestHumans = new ArrayList<GridPoint>();
+			/* fleeing humans */
+			ArrayList<V2> directions = new ArrayList<V2>();
+			V2 myPoint = new V2(pt.getX(), pt.getY()), dest, vect;
 			for (GridCell<Human> cell : humanGridCells)
 			{
 				if (cell.size() > 0)
 				{
-					
+					dest = new V2(cell.getPoint().getX(), cell.getPoint().getY());
+					vect = new V2(myPoint, dest);
+					directions.add(vect);
 				}
+			}
+			if(!directions.isEmpty())
+			{
+				states.put("inactive", false);
+				states.put("fleeing", true);
+				states.put("thirst_quenching", false);
+				states.put("hunger_satisfying", false);
+				states.put("seeking_mate", false);
+				
+				V2 vecSum = directions.get(0);
+				for(int i = 1 ; i < directions.size() ; i++)
+				{
+					vecSum.add(directions.get(i));
+				}
+				vecSum.scale(-1.0f);
+				vecSum.add(pt.getX(), pt.getY());
+				moveTowards(new GridPoint((int)vecSum.x(), (int)vecSum.y()));
+			}
+			
+			else
+			{
+				
 			}
 			
 			if (states.get("inactive") == true)
