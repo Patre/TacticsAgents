@@ -20,19 +20,19 @@ package communication;
 import math.V2;
 
 /**
- * A Message sent from one agent to another, with a type value so that it can be
+ * A message sent from one agent to another, with a type value so that it can be
  * caste to the appropriate sub-class.
  * 
  * @author wdyce
  * @since 20 October, 2012
  * @version 0.1
  */
-public class SpeechAct
+public class Message
 {
 	// ! NESTING
 
 	/**
-	 * Type of speech act, so that we can caste it to the appropriate sub-class.
+	 * Type of message, so that we can caste it to the appropriate sub-class.
 	 */
 	public static enum Type
 	{
@@ -64,23 +64,27 @@ public class SpeechAct
 		DECLARATIVE
 	}
 
+	
 	// ! ATTRIBUTES
-	
-	/**
-	 * Type of speech act, so that we can caste it to the appropriate sub-class.
-	 */
-	private Type type;
-	
-	/**
-	 * The sender's position relative to the receiver.
-	 */
-	private V2 sender_position;
 	
 	/**
 	 * The sender's unique identifier.
 	 */
-	private int sender_id;
+	private final int sender_id;
+	
+	/**
+	 * Type of speech act, so that we can caste it to the appropriate sub-class.
+	 */
+	private final Type type;
+
 	
 	
 	//! METHODS
+	
+	// constructors
+	private Message(int sender_id, Type type)
+	{
+		this.type = type;
+		this.sender_id = sender_id;
+	}
 }
