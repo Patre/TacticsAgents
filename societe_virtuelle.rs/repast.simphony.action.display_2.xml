@@ -7,6 +7,14 @@
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
     <entry>
+      <string>societe_virtuelle.Plant</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+    </entry>
+    <entry>
+      <string>societe_virtuelle.Animal</string>
+      <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
+    </entry>
+    <entry>
       <string>societe_virtuelle.Water</string>
       <string>repast.simphony.visualization.editedStyle.EditedStyle2D</string>
     </entry>
@@ -15,6 +23,14 @@
     <entry>
       <string>societe_virtuelle.Human</string>
       <string>societe_virtuelle.Human.style_1.xml</string>
+    </entry>
+    <entry>
+      <string>societe_virtuelle.Plant</string>
+      <string>societe_virtuelle.Plant.style_0.xml</string>
+    </entry>
+    <entry>
+      <string>societe_virtuelle.Animal</string>
+      <string>societe_virtuelle.Animal.style_0.xml</string>
     </entry>
     <entry>
       <string>societe_virtuelle.Water</string>
@@ -40,8 +56,16 @@
       <int>0</int>
     </entry>
     <entry>
-      <string>societe_virtuelle.Water</string>
+      <string>societe_virtuelle.Plant</string>
+      <int>2</int>
+    </entry>
+    <entry>
+      <string>societe_virtuelle.Animal</string>
       <int>1</int>
+    </entry>
+    <entry>
+      <string>societe_virtuelle.Water</string>
+      <int>3</int>
     </entry>
   </layerOrder>
   <projections>

@@ -22,40 +22,67 @@ import repast.simphony.space.grid.WrapAroundBorders;
 
 /**
  * @author Clo
- *
+ * 
  */
-public class SocieteVirtuelleBuilder implements ContextBuilder<Object> {
+public class SocieteVirtuelleBuilder implements ContextBuilder<Object>
+{
 
-	/* (non-Javadoc)
-	 * @see repast.simphony.dataLoader.ContextBuilder#build(repast.simphony.context.Context)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * repast.simphony.dataLoader.ContextBuilder#build(repast.simphony.context
+	 * .Context)
 	 */
 	@Override
-	public Context build(Context<Object> context) {
+	public Context build(Context<Object> context)
+	{
 		context.setId("societe_virtuelle");
-		
-		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder.createContinuousSpaceFactory(null);
-		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace("space", context, new RandomCartesianAdder<Object>(), new repast.simphony.space.continuous.WrapAroundBorders(), 10, 10);
-		
+
+		ContinuousSpaceFactory spaceFactory = ContinuousSpaceFactoryFinder
+				.createContinuousSpaceFactory(null);
+		ContinuousSpace<Object> space = spaceFactory.createContinuousSpace(
+				"space", context, new RandomCartesianAdder<Object>(),
+				new repast.simphony.space.continuous.WrapAroundBorders(), 100,
+				100);
+
 		GridFactory gridFactory = GridFactoryFinder.createGridFactory(null);
-		Grid<Object> grid = gridFactory.createGrid("grid", context, new GridBuilderParameters<Object>(new WrapAroundBorders(), new SimpleGridAdder<Object>(), true, 10, 10));
-		
+		Grid<Object> grid = gridFactory.createGrid("grid", context,
+				new GridBuilderParameters<Object>(new WrapAroundBorders(),
+						new SimpleGridAdder<Object>(), true, 10, 10));
+
 		Parameters params = RunEnvironment.getInstance().getParameters();
-		int humanCount = (Integer)params.getValue("human_count");
-		for(int i = 0 ; i < humanCount ; i++) {
-			int lifetime = RandomHelper.nextIntFromTo(1, 365*100);
+		int humanCount = (Integer) params.getValue("human_count");
+		for (int i = 0; i < humanCount; i++)
+		{
+			int lifetime = RandomHelper.nextIntFromTo(1, 365 * 100);
 			context.add(new Human(space, grid, lifetime, 0));
 		}
-		
+
 		int waterSquareNb = 10;
-		for(int i = 0 ; i < waterSquareNb ; i++) {
+		for (int i = 0; i < waterSquareNb; i++)
+		{
 			context.add(new Water(space, grid));
 		}
-		
-		for(Object obj : context) {
-			NdPoint pt = space.getLocation(obj);
-			grid.moveTo(obj, (int)pt.getX(), (int)pt.getY());
+
+		int plantCount = 20;
+		for (int i = 0; i < plantCount; i++)
+		{
+			context.add(new Plant(space, grid));
 		}
 		
+		int animalCount = 20;
+		for (int i = 0; i < animalCount; i++)
+		{
+			context.add(new Animal(space, grid, 10, 0));
+		}
+
+		for (Object obj : context)
+		{
+			NdPoint pt = space.getLocation(obj);
+			grid.moveTo(obj, (int) pt.getX(), (int) pt.getY());
+		}
+
 		return context;
 	}
 
