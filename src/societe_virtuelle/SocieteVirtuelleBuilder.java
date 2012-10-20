@@ -24,6 +24,7 @@ import repast.simphony.space.grid.WrapAroundBorders;
  * @author Clo
  * 
  */
+/* tic : 6s */
 public class SocieteVirtuelleBuilder implements ContextBuilder<Object>
 {
 

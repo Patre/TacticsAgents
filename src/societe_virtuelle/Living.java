@@ -21,16 +21,17 @@ public class Living {
 		id = id_tmp++;
 	}
 
-	@ScheduledMethod(start = 1, interval = 365)
+	@ScheduledMethod(start = 365*24*60*60/6, interval = 365*24*60*60/6)
 	public void growOld() {
 		age++;
 		if(age > lifetime) {
+			System.out.println("Je suis le num "+id+" et je meurs de veillesse.");
 			die();
 		}
 	}
 	
 	public void die() {
-		System.out.println("Je suis "+id+" et je meurs. ");
+		//System.out.println("Je suis "+id+" et je meurs. ");
 		Object obj = this;
 		Context<Object> context = ContextUtils.getContext(obj);
 		context.remove(obj);

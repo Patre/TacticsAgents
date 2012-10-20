@@ -13,7 +13,7 @@ public class Plant extends Living {
 		energeticValue = 1;
 	}
 	
-	@ScheduledMethod(start = 10, interval = 150, duration = 10)
+	@ScheduledMethod(start = 10*24*60*60/6, interval = 150*24*60*60/6, duration = 10*24*60*60/6)
 	public void breed() {
 		Context<Object> context = ContextUtils.getContext(this);
 		int nbChildren = RandomHelper.nextIntFromTo(1, 20);
